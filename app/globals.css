@@ -1,26 +1,401 @@
-@import "tailwindcss";
+/* ─── Google Fonts ────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
 
+@import 'tailwindcss';
+
+/* ─── Design Tokens ──────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Romantic Palette */
+  --rose-50:  #fff1f2;
+  --rose-100: #ffe4e6;
+  --rose-200: #fecdd3;
+  --rose-300: #fda4af;
+  --rose-400: #fb7185;
+  --rose-500: #f43f5e;
+  --rose-600: #e11d48;
+
+  --gold-200: #fde68a;
+  --gold-300: #fcd34d;
+  --gold-400: #fbbf24;
+
+  --cream:      #fdfaf7;
+  --cream-dark: #f8f3ee;
+
+  --charcoal:        #1a1a2e;
+  --charcoal-light:  #4a4a6a;
+  --charcoal-lighter:#8888aa;
+
+  --night: #0d0d1a;
+  --night-mid: #12121f;
+
+  /* Glassmorphism */
+  --glass-bg:     rgba(255,255,255,0.72);
+  --glass-border: rgba(253,164,175,0.25);
+  --glass-shadow: 0 8px 40px rgba(244,63,94,0.08), 0 1px 2px rgba(0,0,0,0.04);
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  /* Radius */
+  --radius-sm:   0.5rem;
+  --radius-md:   1rem;
+  --radius-lg:   1.5rem;
+  --radius-xl:   2rem;
+  --radius-2xl:  2.5rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm:  0 2px 8px  rgba(244,63,94,0.06);
+  --shadow-md:  0 4px 20px rgba(244,63,94,0.10);
+  --shadow-lg:  0 8px 40px rgba(244,63,94,0.16);
+  --shadow-xl:  0 16px 60px rgba(244,63,94,0.20);
+
+  /* Transitions */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast:   150ms var(--ease-smooth);
+  --t-base:   300ms var(--ease-smooth);
+  --t-slow:   600ms var(--ease-smooth);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Reset ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--charcoal);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  /* Space for fixed bottom nav + safe area */
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+/* ─── Typography ─────────────────────────────────────────────── */
+.font-display         { font-family: var(--font-display); }
+.font-display-italic  { font-family: var(--font-display); font-style: italic; }
+.font-body            { font-family: var(--font-body); }
+
+/* ─── Background gradient ────────────────────────────────────── */
+.bg-romantic {
+  background:
+    radial-gradient(ellipse at 20% 0%,   rgba(254,228,230,0.6) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(253,164,175,0.3) 0%, transparent 60%),
+    var(--cream);
+  min-height: 100dvh;
+}
+
+.bg-romantic-dark {
+  background:
+    radial-gradient(ellipse at 30% 0%,   rgba(244,63,94,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 100%, rgba(251,113,133,0.08) 0%, transparent 50%),
+    var(--night);
+  min-height: 100dvh;
+}
+
+/* ─── Glassmorphism ──────────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-dark {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+}
+
+/* ─── Cards ──────────────────────────────────────────────────── */
+.card-mission {
+  background: #fff;
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 2px 0 var(--rose-100), 0 20px 60px rgba(0,0,0,0.06), 0 4px 16px rgba(244,63,94,0.06);
+  border: 1px solid rgba(253,164,175,0.2);
+  overflow: hidden;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  background: linear-gradient(135deg, #fb7185, #f43f5e);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(244,63,94,0.3), 0 1px 3px rgba(0,0,0,0.1);
+  transition: all var(--t-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(244,63,94,0.4), 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(244,63,94,0.3);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--rose-200);
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 12px rgba(244,63,94,0.08);
+  transition: all var(--t-base);
+}
+
+.btn-ghost:hover {
+  background: #fff;
+  border-color: var(--rose-300);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244,63,94,0.14);
+  color: var(--rose-500);
+}
+
+/* ─── Form inputs ────────────────────────────────────────────── */
+.input-romantic {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--rose-200);
+  background: rgba(255,255,255,0.8);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--charcoal);
+  transition: all var(--t-base);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.input-romantic:focus {
+  border-color: var(--rose-400);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(244,63,94,0.08);
+}
+
+.input-romantic::placeholder {
+  color: var(--charcoal-lighter);
+}
+
+/* ─── Navigation Bar ─────────────────────────────────────────── */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  background: rgba(255,249,250,0.94);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(255,200,210,0.45);
+  border-radius: var(--radius-full);
+  box-shadow:
+    0 8px 32px rgba(244,63,94,0.1),
+    0 2px 8px rgba(0,0,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.nav-item-link       { display: block; border-radius: var(--radius-full); text-decoration: none; }
+.nav-item-inner      {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 22px 9px;
+  min-width: 76px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.nav-active-bg {
+  position: absolute; inset: 0;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(254,228,230,0.95), rgba(255,241,242,0.98));
+  box-shadow: 0 2px 12px rgba(244,63,94,0.12);
+}
+
+.nav-emoji  { position: relative; font-size: 1.35rem; line-height: 1; }
+.nav-label  {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  transition: color var(--t-base);
+}
+
+.nav-ripple {
+  position: absolute;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(244,63,94,0.3) 0%, transparent 70%);
+  pointer-events: none;
+  margin-left: -12px; margin-top: -12px;
+}
+
+/* ─── Paper texture ──────────────────────────────────────────── */
+.paper-texture {
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(253,237,213,0.3) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(254,243,199,0.2) 0%, transparent 50%);
+}
+
+/* ─── Shimmer text ───────────────────────────────────────────── */
+.shimmer-text {
+  background: linear-gradient(90deg, var(--charcoal) 0%, #c9973c 45%, var(--charcoal) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+
+/* ─── Divider ────────────────────────────────────────────────── */
+.divider-rose {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--rose-300), transparent);
+  margin-inline: auto;
+}
+
+/* ─── Map node glow ──────────────────────────────────────────── */
+.node-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
+
+/* ─── Polaroid ───────────────────────────────────────────────── */
+.polaroid {
+  background: #fff;
+  padding: 0.75rem 0.75rem 3rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
+  border-radius: 3px;
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+
+.polaroid:hover {
+  box-shadow: 0 12px 36px rgba(0,0,0,0.16);
+  transform: scale(1.02);
+}
+
+/* ─── Ambient background shapes ──────────────────────────────── */
+.ambient-bg {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0; overflow: hidden;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar         { width: 4px; }
+::-webkit-scrollbar-track   { background: transparent; }
+::-webkit-scrollbar-thumb   { background: var(--rose-200); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--rose-300); }
+
+/* ─── Selection ──────────────────────────────────────────────── */
+::selection { background: var(--rose-200); color: var(--charcoal); }
+
+/* ─── Focus ──────────────────────────────────────────────────── */
+:focus-visible { outline: 2px solid var(--rose-400); outline-offset: 3px; border-radius: var(--radius-sm); }
+
+/* ─── Keyframes ──────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(244,63,94,0.4), 0 0 16px rgba(244,63,94,0.2); }
+  50%       { box-shadow: 0 0 0 8px rgba(244,63,94,0),   0 0 32px rgba(244,63,94,0.4); }
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0)   scale(1);    opacity: 0; }
+  10%  { opacity: 0.5; }
+  90%  { opacity: 0.1; }
+  100% { transform: translateY(-90px) scale(0.8); opacity: 0; }
+}
+
+@keyframes petalFall {
+  0%   { transform: translateY(-10px) rotate(0deg) translateX(0);  opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(100vh) rotate(540deg) translateX(40px); opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes textReveal {
+  from { opacity: 0; letter-spacing: -0.05em; }
+  to   { opacity: 1; letter-spacing: inherit; }
+}
+
+.petal {
+  position: absolute;
+  width: 8px; height: 10px;
+  border-radius: 50% 0 50% 0;
+  background: linear-gradient(135deg, var(--rose-200), var(--rose-300));
+  animation: petalFall linear infinite;
+  pointer-events: none;
+}
+
+/* ─── Container ──────────────────────────────────────────────── */
+.container-app {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 5vw, 2rem);
 }

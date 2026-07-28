@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Destination {
+  id          String            @id @default(cuid())
+  order       Int               @unique
+  name        String
+  description String
+  icon        String
+  date        String
+  dayLabel    String
+  timeLabel   String
+  status      DestinationStatus @default(LOCKED)
+  photoUrl    String?
+  comment     String?
+  unlockedAt  DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("destinations")
+}
+
+model Letter {
+  id        String   @id @default(cuid())
+  content   String
+  signature String   @default("Con todo mi amor ❤️")
+  updatedAt DateTime @updatedAt
+
+  @@map("letters")
+}
+
+model Settings {
+  id           String   @id @default(cuid())
+  recipientName String  @default("Ozio")
+  senderName   String   @default("Tu amor")
+  musicUrl     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("settings")
+}
+
+enum DestinationStatus {
+  LOCKED
+  UNLOCKED
+}
